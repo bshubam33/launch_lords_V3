@@ -86,4 +86,37 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
+    // Footer Scroll Animation Logic
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Trigger only once
+            }
+        });
+    }, observerOptions);
+
+    const footerTargetSelectors = [
+        '.bottom-bar h4', 
+        '.bottom-bar .team-member', 
+        '.bottom-bar .social-links-row', 
+        '.bottom-bar .queries-text', 
+        '.bottom-bar .footer-meta'
+    ].join(', ');
+
+    const footerElements = document.querySelectorAll(footerTargetSelectors);
+    
+    footerElements.forEach((el, index) => {
+        el.classList.add('fade-up');
+        // Add a slight stagger delay for a cascading effect
+        el.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(el);
+    });
 });
